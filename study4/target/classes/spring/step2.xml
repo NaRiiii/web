@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="boardDao" class="com.di.step2.BoardDaoOracle" >
+		<property name="url">
+			<value>jdbc:oracle:thin:@127.0.0.1:1521:xe</value>
+		</property>
+	</bean>
+	
+	<!-- BoardDaoMySql을 boardDao2등록, url도 설정 -->
+	<!-- <bean id="boardDao2" class="com.di.step2.BoardDaoMySql">
+		<property name="url" value="jdbc:mysql://localhost/dev" />
+	</bean> -->
+	
+	<bean id="boardDao2" class="com.di.step2.BoardDaoMySql" p:url="jdbc:mysql://localhost/dev" scope="prototype"/>
+	<bean id="boardService2" class="com.di.set2.BoardService" p:boardDao-ref="boardDao2" ></bean>
+	
+	
+	<!-- BoardDaoMySql 빈으로 변경 -->
+	<bean id="boardService" class="com.di.step2.BoardService" init-method="myInit" destroy-method="myDestroy" p:boardDao-ref="boardDao2"/>
+
+</beans>

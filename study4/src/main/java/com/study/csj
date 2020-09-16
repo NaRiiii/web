@@ -1,0 +1,22 @@
+memberview의 직업 취미가 코드로 나와있기 때문에 이름으로 나오도록 수정
+
+1. 오라클에서 조인, 서브쿼리를 이용해서 만들어보기
+2. memberView에 두가지 필드 추가 (게터세터포함)
+3. memberDaoOracle에서 getMember부분 추가하기 
+4. getMember의 append 복사해서 getMemberList에 추가 / 수정
+
+MemberServiceImpl
+getMemberList 복사해서 getMember에 붙여넣기 / 수정
+
+memberView 수정
+커넥션 ~ 자원종료까지 삭제/ 수정
+
+memberEdit 
+memberViw한거랑 똑같이 하기ㅠ
+
+memberModify ,, 걍 쌤 하는거 따라해뚬 ㅠ
+
+MemberServiceImpl 
+
+MemberDaoOracle  에서 업데이트랑 인서트  추가해주세용 ㅠ 
+

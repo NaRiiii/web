@@ -1,0 +1,36 @@
+- 설정파일분리 (mvc-servlet에서 하던거)
+	Context-main.xml : scan, property
+	Context-datasource : datasource, mybatis
+	Context-aspect : aop
+
+
+- AOP 개념
+	Core Concern : (핵심관심사) 실제 해야될 업무로직
+	Crosscutting Concern :(횡단관심사) 시스템적으로 필요한 기능 (로깅.보안,트랜잭션 등)
+	
+	Proxy객체 구현 : 해당 객체가 인터페이스를 구현했으면, 프록시도 해당 인터페이스를 구현 
+				  : 일반 객체이면 상속을 
+				    일반객체가 final인 경우 AOP가 막힐 수 있음
+
+	Advice구현시 첫번째 인자는 JoinPoint사용
+		JoinPoint
+		  - getTarget() : 대상객체(원본) 
+		  - getTarget().getClass().getSimpleName() :클래스명
+		  - getSignature().getName(): 메서드 명
+		  - getAtgs() : Object[] 리턴 
+		
+		단, Around Joinpoint인 경우
+		   내부에서 원본을 호출해야하기 때문에 ProceedingJoinPoint 제공
+		 -> 추가된 메서드 .proceed() :원본 호출, 리턴은 Object
+		
+		execution 표기법
+		execution([접근제어자(생략가능)] *[리턴(필수)] [패키지, 클래스(생략가능)] *(..)[모든메서드(필수)] )
+		리턴타입 필수 : 일반적으로 *사용
+		메서드명 필수 : *, insert*, get*, 사용가능
+		파라미터에서 ".."은 모든 아규먼트를 뜻함 	
+	
+
+- File upload/download
+- Mybatis - resultMap 사용  ***
+	table  1 : 1  - association 관계 	
+	  or   1 : N  - collection 관계

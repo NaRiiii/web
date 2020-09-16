@@ -1,0 +1,101 @@
+# 
+
+모든 컴트롤러에 로그처리
+	넘겨진 파라미터는 꼭 debug처리
+	예외는 error처리
+	sys.out 모두 제거 
+	
+--뷰 정보 파일 : freeEdit.jsp 
+	글 번호가 존재할 때 수정입력을 위한 뷰 이면서 	(freeEdit.wow?boNo=?)
+	글 수정 처리요청시 검증 오류를 보여줄 화면이기도 합니다. (freeModify.wow)
+	
+--뷰 정보 파일 : freeForm.jsp 
+	글 등록시 입력을 위한 뷰 이면서 				(freeForm.wow)
+	글 등록 처리 요청시 검증 오류를 보여줄 화면이기도 합니다. (freeRegist.wow)
+	
+
+	
+	
+	
+	Bean Validation  
+
+javax.validation.constraints. 
+
+하이버네이트에서 확장된 어노테이션 
+org.hibernate.validator.constraints.
+@URL; @Range; @CreditCardNumber; @Email; @NotBlank; @NotEmpty;
+
+freeEdit.jsp 에서 스프링에서 제공하는 폼태그를 사용할건데
+spring 4.2전에는 commandName이라는 속성이름으로 사용하였으나, 그 이후에는 modelAttribute
+
+modelAttribute 기술 시 : 속성에 모델정보가 꼭 존재해야 합니다.
+
+<form:form  />
+
+
+1. Spring Validator를 구현한 객체로 검증
+  -- 등록할 때, 수정할 때 별개로 해서 구성 
+      (BoardRegistValidator , BoardModifyValidator .. )-->안함
+      
+2. @Valid 로 자동 검증 
+  -- Spring Validator를  구현하지 않아도 되죠... 
+  
+  -- 등록할 때, 수정할 때 별개로 해야 하는데.... 음.. 
+  어노테이션 속성에 group 을 활용해서 구현하실수 있습니다.
+  기존 @Valid 는 아직 구현되지 않아서 
+  스프링에서 제공하는 @Validated  어노테이션을 사용해야 합니다. 
+   
+  com.study.common.valid 에 RegistType, ModifyType 인터페이스 생성(껍데기만)  
+  -- 모등 검증 어노테이션에 groups 를 기술..안하셔도 되는데...
+  -- 스프링 Default 라는것을 기술하시면 됩니다. @Validated 에.... 
+     javax.validation.groups.Default 클래스 넣어주세요
+     
+  
+  -- 게시판 수정, 수정처리 부분을 최대한 스프링답게 해주세요 
+   boardEdit.jsp 도 기존것 백업하시고 최대한 스프링 폼 태그 적용해주시고
+   해당 컨트롤러 매핑 메서드에도 @Valid 적용해주시고 깔끔하게...
+   
+   
+   
+   
+  43일차
+  댓글
+  DI 1일
+  ADP 1일
+  자료일 2일
+  
+-------------------------------------------
+  jQuery : append, each 함수
+  			text() 
+  		    val() 폼의 input 의 값 
+  		    html()
+  		    data()
+  			show(), hide(), toggle()
+  			closest(), find()
+  			modal()
+  			$(current).click(callback);
+  			$(current).on('click', current, callback);
+  			
+  			부트스트랩의 모달 창
+ ------------------------------------------
+  
+  < 댓글 >
+   
+   	   목록 : 1. curPage 1증가
+   			 2. 10건이 안되면 더보기 버튼 숨김 
+   	   등록 : 성공하면 현재 목록을 갱신해야함
+   	   	       1) 목록 영역을 지우고 다시 1페이지 정보 가져오기 *
+   	   	       2) 스크립트로 입력한 댓글 내용을 생성(UI- 스크립트)
+   	   수정 : 성공하면 수정화면을 생성 -> 모달창 사용 
+   	   				  저 장 >  
+   	   삭제 : 성공했을 시 해당 댓글 화면을 제거
+   	   
+   	    
+   	   
+   	   
+   	   
+   	   
+   	   
+   	   
+   	   
+   	   

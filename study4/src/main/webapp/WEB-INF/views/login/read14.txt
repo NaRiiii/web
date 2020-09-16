@@ -1,0 +1,18 @@
+# read14.txt
+
+
+과제 : remember-me를 구현해주시면 됩니다.
+ 
+ loginCheck.jsp 에서 로그인에 성공했고,
+ "rememberMe" 파라미터가 존재하고 값이 "Y" 이면 
+ 쿠키 생성 "SAVE_ID"로 해서 로그인 아이디를 저장
+ "rememberMe" 파라미터가 존재하지 않으면
+ "SAVE_ID" 쿠키 제거
+ 
+ 
+ login.jsp에서
+ 쿠키 "SAVE_ID"를 조회 (SAVE_ID = malja
+ 만약, 쿠키가 존재하면 
+  <input type="text" name="userId" class="form-control input-sm" value="malja">
+  <input type="checkbox" name="rememberMe" value="Y" checked="checked"> 
+ 

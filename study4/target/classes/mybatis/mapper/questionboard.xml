@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- nameSpace : 간단하게 하셔도 됩니다.
+  		단, mapper 클래스를 사용하려면 완전한 클래스 이름으로 지정  -->
+<mapper namespace="com.study.free.dao.IQuestionBoardDao"> <!-- 인터페이스  -->
+  			<sql id="whereClause"> 
+  			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchCategory)">
+  			AND bo_category = #{searchCategory}
+  			</if>
+  			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchWord)">
+  				<choose>
+  					<when test='searchType == "T"'>
+  						AND bo_title LIKE '%' || #{searchWord} || '%'
+  					</when>
+  					<when test='searchType == "W"'>
+  						AND bo_writer LIKE '%' || #{searchWord} || '%'
+  					</when>
+  					<when test='searchType == "C"'>
+  						AND bo_content LIKE '%' || #{searchWord} || '%'
+  					</when>
+  					<otherwise>
+  						AND bo_title LIKE '%' || #{searchWord} || '%'
+  					</otherwise>
+  				</choose>
+  			</if>
+  			</sql>
+  <select id="getBoardCount" resultType="int" parameterType="com.study.questionboard.vo.QuestionBoardSearchVO">
+			SELECT count(*) 
+			  FROM free_board 
+			 WHERE bo_del_yn = 'N'
+			 <include refid="whereClause"/>
+  </select>
+  
+  <select id="getBoardList" resultType="com.study.free.vo.FreeBoardVO" parameterType="com.study.questionboard.vo.QuestionBoardSearchVO" >
+  			 <include refid="common.PRE_PAGING_SQL"/>
+  			 SELECT  a.bo_no
+  			 	   , b.comm_nm as bo_categoryNm       
+  			 	   , a.bo_title         				
+				   , a.bo_writer     
+				   , to_char(a.bo_reg_date,'yyyy-mm-dd') as bo_reg_date     
+				   , a.bo_hit   
+			  FROM   free_board a, comm_code b                          								
+			  where a.bo_category = b.comm_cd(+) and a.bo_del_yn = 'N'
+			  <include refid="whereClause"/>
+			  order by bo_no desc
+			  <include refid="common.SUF_PAGING_SQL"/>
+  </select>
+  <insert id="insertBoard" parameterType="com.study.questionboard.vo.QuestionBoardVO" >
+  			INSERT INTO free_board (                           	     
+				    bo_no     , bo_title   , bo_category       		 
+				  , bo_writer , bo_pass    , bo_content     		  
+				  , bo_ip     , bo_hit     , bo_reg_date 
+				  , bo_del_yn 
+				) VALUES (  
+				<![CDATA[                                  		      
+				   SEQ_FREE_BOARD.NEXTVAL  , #{boTitle}   , #{boCategory} 							  
+				 , #{boWriter}			   , #{boPass}    , #{boContent} 												
+				 , #{boIp}				   , #{boHit}	  , sysdate
+				 ,'N') 										  
+  				]]>
+  </insert>
+  <update id="updateBoard" parameterType="com.study.questionboard.vo.QuestionBoardVO">
+ 			 <![CDATA[  
+  			UPDATE free_board          										
+			     SET bo_title    = #{boTitle} 										
+			       , bo_writer   = #{boWriter} 										
+			       , bo_category = #{boCategory} 										
+			       , bo_content  = #{boContent}										
+			       , bo_mod_date = sysdate
+			 WHERE bo_no = #{boNo}   
+			 ]]>    
+  </update>
+  
+  <delete id="deleteBoard" parameterType="com.study.questionboard.vo.QuestionBoardVO">
+			 <![CDATA[  
+  			UPDATE free_board          
+			 SET bo_del_yn = 'Y'      
+			 WHERE bo_no = #{boNo}   
+			    ]]> 
+  </delete>
+ 
+ <update id="increaseHit" parameterType="int">
+ 			UPDATE free_board         
+			 SET bo_hit  = bo_hit + 1 
+			WHERE bo_no  = #{boNo}  
+ </update>
+ 
+ <select id="getBoard" resultType="com.study.questionboard.vo.QuestionBoardVO" parameterType="int">
+ 			 SELECT bo_no     
+ 			 	   ,bo_title ,bo_pass   													  
+				   ,bo_category  
+				   ,( select comm_nm from comm_code where bo_category = comm_cd ) as bo_categoryNm    
+			       ,bo_writer    
+			       ,bo_content      
+			       ,bo_ip        								
+			       ,bo_hit     																	
+			       ,bo_reg_date, bo_del_yn     													
+			  FROM free_board                                        							
+			  	WHERE bo_no = #{boNo}  																	
+ </select>
+ 
+ </mapper>
+ 
+ 
+ 
+ 
